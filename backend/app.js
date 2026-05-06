@@ -44,7 +44,7 @@ app.get('/health', (_req, res) => {
 });
 
 // ─── Routes ──────────────────────────────────────────────────
-app.use('/auth', authRoutes);
+app.use('/api/auth', authRoutes);
 app.use('/api/links', linkRoutes);
 app.use('/r', redirectRoutes);
 

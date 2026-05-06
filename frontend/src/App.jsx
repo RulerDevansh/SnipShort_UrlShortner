@@ -37,7 +37,7 @@ export default function App() {
             </main>
             <footer className="py-8 border-t border-surface-border text-center">
               <p className="text-xs text-gray-600 font-medium tracking-widest uppercase">
-                Made with ❤️ by <span className="text-brand-400">RulerDevansh</span>
+                Made with ❤️ by <a href="https://github.com/RulerDevansh" target="_blank" rel="noopener noreferrer" className="text-brand-400 hover:text-brand-300 transition-colors">RulerDevansh</a>
               </p>
             </footer>
           </div>

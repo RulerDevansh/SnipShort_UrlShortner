@@ -45,4 +45,12 @@ const authLimiter = createLimiter({
   message: 'Too many authentication attempts. Please try again later.',
 });
 
-module.exports = { globalLimiter, shortenLimiter, authLimiter };
+/** Guest shorten limiter: 1 link / 24 hours per IP */
+const guestShortenLimiter = createLimiter({
+  windowMs: 24 * 60 * 60 * 1000,
+  max: 1,
+  prefix: 'guestShorten',
+  message: 'Guest limit reached. Only 1 temporary link is allowed per day. Please sign in for unlimited links!',
+});
+
+module.exports = { globalLimiter, authLimiter, shortenLimiter, guestShortenLimiter };

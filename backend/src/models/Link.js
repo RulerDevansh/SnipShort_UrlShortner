@@ -11,7 +11,7 @@ const Link = sequelize.define(
     },
     user_id: {
       type: DataTypes.UUID,
-      allowNull: false,
+      allowNull: true,
     },
     original_url: {
       type: DataTypes.TEXT,

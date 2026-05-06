@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import ShortenForm from '../components/ShortenForm';
+import GuestShortenForm from '../components/GuestShortenForm';
 import { copyToClipboard } from '../utils/helpers';
 import { useToast } from '../context/ToastContext';
 
@@ -112,11 +113,13 @@ export default function Home() {
                 {result && <QuickResult link={result} />}
               </div>
             ) : (
-              <div className="card p-6 text-center">
-                <p className="text-gray-400 mb-4">Create an account to start shortening URLs and tracking analytics.</p>
-                <div className="flex items-center justify-center gap-3">
-                  <Link to="/register" className="btn-primary">Get started free</Link>
-                  <Link to="/login" className="btn-secondary">Log in</Link>
+              <div className="flex flex-col gap-6">
+                <GuestShortenForm />
+                
+                <div className="flex items-center justify-center gap-6 text-sm">
+                  <Link to="/register" className="text-gray-400 hover:text-brand-400 transition-colors font-medium">Create account for analytics</Link>
+                  <span className="text-gray-700">|</span>
+                  <Link to="/login" className="text-gray-400 hover:text-brand-400 transition-colors font-medium">Log in</Link>
                 </div>
               </div>
             )}

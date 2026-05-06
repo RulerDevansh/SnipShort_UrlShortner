@@ -3,6 +3,54 @@ const { generateCode } = require('../utils/generateCode');
 const { setCachedUrl, invalidateCachedUrl } = require('../services/cacheService');
 
 /**
+ * POST /api/links/public — create an anonymous temporary link (expires in 24h)
+ */
+const createPublicLink = async (req, res, next) => {
+  try {
+    const { original_url } = req.body;
+
+    // 24 hours from now
+    const expiresAt = new Date();
+    expiresAt.setHours(expiresAt.getHours() + 24);
+
+    let shortCode = generateCode();
+    // In production, we'd check for collision here, but generateCode() with 6 chars is 56 billion combinations
+    // For a public guest feature, a quick collision check is good
+    const exists = await Link.findOne({ where: { short_code: shortCode } });
+    if (exists) shortCode = generateCode(); // One retry is usually enough
+
+    const link = await Link.create({
+      user_id: null,
+      original_url,
+      short_code: shortCode,
+      expires_at: expiresAt,
+    });
+
+    await setCachedUrl(shortCode, original_url);
+
+    const baseUrl = process.env.BASE_URL || 'http://localhost:3000';
+
+    return res.status(201).json({
+      success: true,
+      message: 'Temporary link created (valid for 24h).',
+      data: {
+        link: {
+          id: link.id,
+          original_url: link.original_url,
+          short_code: link.short_code,
+          short_url: `${baseUrl}/r/${link.short_code}`,
+          click_count: link.click_count,
+          expires_at: link.expires_at,
+          created_at: link.created_at,
+        },
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
  * POST /api/links  — create a shortened link
  */
 const createLink = async (req, res, next) => {
@@ -149,4 +197,4 @@ const getLinkStats = async (req, res, next) => {
   }
 };
 
-module.exports = { createLink, getLinks, deleteLink, getLinkStats };
+module.exports = { createPublicLink, createLink, getLinks, deleteLink, getLinkStats };

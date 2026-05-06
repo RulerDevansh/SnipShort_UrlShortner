@@ -14,13 +14,30 @@
 
 ## 📸 Screenshots
 
-| Home Page | Dashboard |
-| :---: | :---: |
-| ![Home](frontend/public/Home.png) | ![Dashboard](frontend/public/dashboard.png) |
-
-| Guest Experience | Login |
-| :---: | :---: |
-| ![Guest](frontend/public/Devlogo.svg) | ![Login](frontend/public/Login.png) |
+<div align="center">
+  <table flex>
+    <tr>
+      <td align="center" width="50%">
+        <b>Home Page</b><br />
+        <img src="frontend/public/Home.png" width="400" alt="Home Page" />
+      </td>
+      <td align="center" width="50%">
+        <b>Dashboard</b><br />
+        <img src="frontend/public/dashboard.png" width="400" alt="Dashboard" />
+      </td>
+    </tr>
+    <tr>
+      <td align="center" width="50%">
+        <b>Login Page</b><br />
+        <img src="frontend/public/Login.png" width="400" alt="Login Page" />
+      </td>
+      <td align="center" width="50%">
+        <b>Branding</b><br />
+        <img src="frontend/public/Devlogo.svg" width="150" alt="Logo" />
+      </td>
+    </tr>
+  </table>
+</div>
 
 ---
 
@@ -30,7 +47,7 @@
 - 🔐 **Secure Auth:** Google OAuth 2.0 & JWT-based authentication.
 - 👤 **Guest Mode:** Allow unauthenticated users to create temporary (24h) links.
 - 📊 **Analytics:** Track click counts and recent activity for every link.
-- 🏷️ **Custom Aliases:** Create branded, memorable short codes.
+- 🏷️ **Custom Aliases:** Create branded, memorable short links.
 - 🛡️ **Rate Limiting:** IP-based protection using Redis.
 - 🐳 **Dockerized:** Fully containerised backend for seamless deployment.
 

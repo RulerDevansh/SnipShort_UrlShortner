@@ -6,3 +6,4 @@ build
 *.pem
 .vercel
 EXPLAINER.md
+.env*.local

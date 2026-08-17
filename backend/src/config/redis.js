@@ -48,6 +48,7 @@ const connectRedis = async () => {
     }
   } catch (err) {
     console.warn('[Redis] Initial connection failed. Falling back to in-memory behavior:', err.message);
+    redis.disconnect();
   }
 };
 

@@ -15,6 +15,12 @@ const app = express();
 
 // ─── Security ────────────────────────────────────────────────
 app.set('trust proxy', 1); // trust first proxy (nginx / load balancer)
+
+// Lightweight uptime checks before CORS/auth/rate limiting.
+app.head('/', (_req, res) => res.status(204).end());
+app.head('/ping', (_req, res) => res.status(204).end());
+app.get('/ping', (_req, res) => res.status(204).end());
+
 app.use(helmet());
 app.use(
   cors({

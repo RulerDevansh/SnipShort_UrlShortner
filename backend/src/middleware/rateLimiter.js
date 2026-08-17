@@ -1,13 +1,13 @@
 const rateLimit = require('express-rate-limit');
 const { RedisStore } = require('rate-limit-redis');
-const { redis } = require('../config/redis');
+const { redis, isRedisReady } = require('../config/redis');
 require('dotenv').config();
 
 /**
  * Build a rate limiter backed by Redis
  */
 const createLimiter = ({ windowMs, max, prefix, message }) => {
-  const redisStore = redis
+  const redisStore = redis && isRedisReady()
     ? new RedisStore({
         sendCommand: (...args) => redis.call(...args),
         prefix: `rl:${prefix}:`,
@@ -21,6 +21,7 @@ const createLimiter = ({ windowMs, max, prefix, message }) => {
     legacyHeaders: false,
     message: { success: false, message },
     store: redisStore,
+    passOnStoreError: true,
     skip: () => process.env.NODE_ENV === 'test',
   });
 };

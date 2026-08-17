@@ -7,16 +7,20 @@ require('dotenv').config();
  * Build a rate limiter backed by Redis
  */
 const createLimiter = ({ windowMs, max, prefix, message }) => {
+  const redisStore = redis
+    ? new RedisStore({
+        sendCommand: (...args) => redis.call(...args),
+        prefix: `rl:${prefix}:`,
+      })
+    : undefined;
+
   return rateLimit({
     windowMs,
     max,
     standardHeaders: true,
     legacyHeaders: false,
     message: { success: false, message },
-    store: new RedisStore({
-      sendCommand: (...args) => redis.call(...args),
-      prefix: `rl:${prefix}:`,
-    }),
+    store: redisStore,
     skip: () => process.env.NODE_ENV === 'test',
   });
 };

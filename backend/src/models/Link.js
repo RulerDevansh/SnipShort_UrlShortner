@@ -23,7 +23,7 @@ const Link = sequelize.define(
       unique: true,
     },
     click_count: {
-      type: DataTypes.INTEGER.UNSIGNED,
+      type: DataTypes.INTEGER,
       defaultValue: 0,
       allowNull: false,
     },

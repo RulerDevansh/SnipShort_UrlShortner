@@ -1,27 +1,40 @@
 const { Sequelize } = require('sequelize');
 require('dotenv').config();
 
-const sequelize = new Sequelize(
-  process.env.DB_NAME,
-  process.env.DB_USER,
-  process.env.DB_PASSWORD,
-  {
-    host: process.env.DB_HOST,
-    port: parseInt(process.env.DB_PORT, 10) || 3306,
-    dialect: 'mysql',
-    logging: process.env.NODE_ENV === 'development' ? console.log : false,
-    pool: {
-      max: 10,
-      min: 2,
-      acquire: 30000,
-      idle: 10000,
+const dialect = process.env.DB_DIALECT || (process.env.DATABASE_URL ? 'postgres' : 'mysql');
+const dbSslEnabled = process.env.DB_SSL === 'true';
+
+const baseOptions = {
+  dialect,
+  logging: process.env.NODE_ENV === 'development' ? console.log : false,
+  pool: {
+    max: 10,
+    min: 2,
+    acquire: 30000,
+    idle: 10000,
+  },
+  define: {
+    underscored: true,
+    timestamps: true,
+  },
+};
+
+if (dialect === 'postgres' && dbSslEnabled) {
+  baseOptions.dialectOptions = {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false,
     },
-    define: {
-      underscored: true,
-      timestamps: true,
-    },
-  }
-);
+  };
+}
+
+const sequelize = process.env.DATABASE_URL
+  ? new Sequelize(process.env.DATABASE_URL, baseOptions)
+  : new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
+      ...baseOptions,
+      host: process.env.DB_HOST,
+      port: parseInt(process.env.DB_PORT, 10) || 3306,
+    });
 
 const connectDB = async () => {
   let retries = 5;
